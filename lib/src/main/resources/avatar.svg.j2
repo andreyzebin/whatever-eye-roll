@@ -46,13 +46,13 @@
 
       <!-- Зубы (маскируются контуром рта) -->
       <g id="teeth" mask="url(#mouthMask)" opacity="{{ mouthOpen }}">
-        {% set toothWidth = w / 5 %}
-        {% set toothHeight = 6 %}
-        <!-- Зубы фиксированы относительно верхней линии (не двигаются с челюстью) -->
-        {% set teethY = 0 %}  <!-- Фиксированная позиция -->
+        {% set toothWidth = w / 4 %}  <!-- Увеличили ширину зубов (было /5) -->
+        {% set toothHeight = 10 %}    <!-- Увеличили высоту зубов (было 6) -->
+        <!-- Зубы фиксированы относительно верхней линии -->
+        {% set teethY = 2 %}  <!-- Небольшое смещение вниз от верхней линии -->
 
-        {% for i in range(-2, 3) %}
-          {% set x = i * toothWidth %}
+        {% for i in range(-2, 2) %}  <!-- Уменьшили количество зубов для лучшего вида -->
+          {% set x = i * toothWidth + toothWidth/2 %}
           <rect x="{{ x - toothWidth/2 }}" y="{{ teethY }}" width="{{ toothWidth - 1 }}" height="{{ toothHeight }}" fill="#fff" stroke="#ddd" stroke-width="0.5"/>
         {% endfor %}
       </g>
