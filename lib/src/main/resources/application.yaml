@@ -3,6 +3,19 @@ micronaut:
     name: avatar-animation-server
   server:
     port: 8080
+    cors:
+      enabled: true
+      configurations:
+        web:
+          allowed-origins:
+            - "http://localhost:8080"
+            - "http://127.0.0.1:8080"
+          allowed-methods:
+            - GET
+            - POST
+            - OPTIONS
+          allowed-headers:
+            - "*"
   router:
     static-resources:
       default:
