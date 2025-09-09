@@ -1,12 +1,15 @@
 package org.example;
 
 import com.hubspot.jinjava.Jinjava;
+import lombok.extern.slf4j.Slf4j;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+@Slf4j
 public class AvatarTemplateRenderer {
 
     private static final Jinjava jinjava = new Jinjava();
@@ -14,7 +17,7 @@ public class AvatarTemplateRenderer {
 
     static {
         try {
-            template = Files.readString(Path.of("lib/src/main/resources/avatar.svg.j2"));
+            template = Files.readString(Path.of("src/main/resources/avatar.svg.j2"));
         } catch (Exception e) {
             throw new RuntimeException("Cannot load template", e);
         }
@@ -53,22 +56,5 @@ public class AvatarTemplateRenderer {
     private static String fmt(double v) {
         String s = String.format(Locale.US, "%.3f", v);
         return s.replaceAll("0+$", "").replaceAll("\\.$", "");
-    }
-
-    public static void main(String[] args) throws Exception {
-        Map<String, double[]> presets = Map.of(
-            "avatar_eye_roll.svg", new double[]{0.9, 1.0, -20.0, -2.0, 0.0, 0.1, 0.0, 2.0},
-            "avatar_happy.svg",    new double[]{1.0, 0.0,  0.0,  0.0, -0.8, 0.3, 0.0, 0.0},
-            "avatar_sad.svg",      new double[]{0.7, 0.0, 10.0,  3.0,  0.8, 0.1, 0.0, 0.0},
-            "avatar_angry.svg",    new double[]{0.8, 0.0, -30.0,-5.0,  0.2, 0.05,0.0, 0.0}
-        );
-
-        for (var entry : presets.entrySet()) {
-            String svg = render(entry.getValue()[0], entry.getValue()[1], entry.getValue()[2],
-                                entry.getValue()[3], entry.getValue()[4], entry.getValue()[5],
-                                entry.getValue()[6], entry.getValue()[7]);
-            Files.writeString(Path.of(entry.getKey()), svg);
-            System.out.println("Rendered " + entry.getKey());
-        }
     }
 }
