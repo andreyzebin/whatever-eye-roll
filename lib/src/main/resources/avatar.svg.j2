@@ -6,7 +6,7 @@
 
     <!-- Маска для скрытия зубов за контуром рта -->
     <mask id="mouthMask">
-      <path d="M {{ negW }} 0 Q 0 {{ topCy }} {{ w }} 0 Q 0 {{ bottomCy }} {{ negW }} 0" fill="white"/>
+      <path d="M {{ negW }} 0 Q 0 {{ minTopCy16 }} {{ w }} 0 Q 0 {{ bottomCy }} {{ negW }} 0" fill="white"/>
     </mask>
   </defs>
 
@@ -42,17 +42,18 @@
     <!-- Mouth -->
     <g transform="translate(0,44)">
       <!-- Основной контур рта -->
-      <path d="M {{ negW }} 0 Q 0 {{ topCy }} {{ w }} 0 Q 0 {{ bottomCy }} {{ negW }} 0" fill="#d66" opacity="0.95"/>
+      <path d="M {{ negW }} 0 Q 0 {{ minTopCy16 }} {{ w }} 0 Q 0 {{ bottomCy }} {{ negW }} 0" fill="#d66" opacity="0.95"/>
 
       <!-- Зубы (маскируются контуром рта) -->
       <g id="teeth" mask="url(#mouthMask)" opacity="{{ mouthOpen }}">
         {% set toothWidth = w / 5 %}
         {% set toothHeight = 6 %}
-        {% set teethOffset = (bottomCy - topCy) * 0.3 %}  <!-- Смещение вниз относительно верхней линии -->
+        <!-- Зубы фиксированы относительно верхней линии (не двигаются с челюстью) -->
+        {% set teethY = 0 %}  <!-- Фиксированная позиция -->
 
         {% for i in range(-2, 3) %}
           {% set x = i * toothWidth %}
-          <rect x="{{ x - toothWidth/2 }}" y="{{ teethOffset }}" width="{{ toothWidth - 1 }}" height="{{ toothHeight }}" fill="#fff" stroke="#ddd" stroke-width="0.5"/>
+          <rect x="{{ x - toothWidth/2 }}" y="{{ teethY }}" width="{{ toothWidth - 1 }}" height="{{ toothHeight }}" fill="#fff" stroke="#ddd" stroke-width="0.5"/>
         {% endfor %}
       </g>
 
