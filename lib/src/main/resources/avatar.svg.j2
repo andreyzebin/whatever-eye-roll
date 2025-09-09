@@ -3,6 +3,11 @@
   <defs>
     <clipPath id="eyeClipLeft"><ellipse cx="0" cy="0" rx="26" ry="{{ eyeRy }}"/></clipPath>
     <clipPath id="eyeClipRight"><ellipse cx="0" cy="0" rx="26" ry="{{ eyeRy }}"/></clipPath>
+
+    <!-- Маска для скрытия зубов за контуром рта -->
+    <mask id="mouthMask">
+      <path d="M {{ negW }} 0 Q 0 {{ topCy }} {{ w }} 0 Q 0 {{ bottomCy }} {{ negW }} 0" fill="white"/>
+    </mask>
   </defs>
 
   <g id="faceGroup" transform="translate(180,180) rotate({{ tilt }})">
@@ -36,7 +41,22 @@
 
     <!-- Mouth -->
     <g transform="translate(0,44)">
+      <!-- Основной контур рта -->
       <path d="M {{ negW }} 0 Q 0 {{ topCy }} {{ w }} 0 Q 0 {{ bottomCy }} {{ negW }} 0" fill="#d66" opacity="0.95"/>
+
+      <!-- Зубы (маскируются контуром рта) -->
+      <g id="teeth" mask="url(#mouthMask)" opacity="{{ mouthOpen }}">
+        {% set toothWidth = w / 5 %}
+        {% set toothHeight = 6 %}
+        {% set teethOffset = (bottomCy - topCy) * 0.3 %}  <!-- Смещение вниз относительно верхней линии -->
+
+        {% for i in range(-2, 3) %}
+          {% set x = i * toothWidth %}
+          <rect x="{{ x - toothWidth/2 }}" y="{{ teethOffset }}" width="{{ toothWidth - 1 }}" height="{{ toothHeight }}" fill="#fff" stroke="#ddd" stroke-width="0.5"/>
+        {% endfor %}
+      </g>
+
+      <!-- Верхняя линия рта (поверх зубов) -->
       <path d="M {{ negW }} 0 Q 0 {{ minTopCy16 }} {{ w }} 0" stroke="#7a2a2a" stroke-width="3" fill="none" stroke-linecap="round"/>
     </g>
   </g>
