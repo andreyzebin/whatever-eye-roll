@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="360" viewBox="0 0 360 360">
+  <defs>
+    <clipPath id="eyeClipLeft"><ellipse cx="0" cy="0" rx="26" ry="{{ eyeRy }}"/></clipPath>
+    <clipPath id="eyeClipRight"><ellipse cx="0" cy="0" rx="26" ry="{{ eyeRy }}"/></clipPath>
+
+    <!-- Маска для скрытия зубов за контуром рта -->
+    <mask id="mouthMask">
+      <path d="M {{ negW }} 0 Q 0 {{ minTopCy16 }} {{ w }} 0 Q 0 {{ bottomCy }} {{ negW }} 0" fill="white"/>
+    </mask>
+  </defs>
+
+  <g id="faceGroup" transform="translate(180,180) rotate({{ tilt }})">
+    <circle cx="0" cy="0" r="120" fill="#FFDDAE" stroke="#e6c79a" stroke-width="2"/>
+
+    <!-- Left eye -->
+    <g transform="translate(-48,-20)">
+      <ellipse cx="0" cy="0" rx="26" ry="{{ eyeRy }}" fill="#fff"/>
+      <g clip-path="url(#eyeClipLeft)">
+        <ellipse cx="{{ pupilX }}" cy="{{ rollOffset }}" rx="{{ irisR }}" ry="{{ irisR }}" fill="#2b3a58"/>
+        <circle cx="{{ pupilX }}" cy="{{ rollOffset }}" r="4" fill="#000"/>
+      </g>
+    </g>
+
+    <!-- Right eye -->
+    <g transform="translate(48,-20)">
+      <ellipse cx="0" cy="0" rx="26" ry="{{ eyeRy }}" fill="#fff"/>
+      <g clip-path="url(#eyeClipRight)">
+        <ellipse cx="{{ pupilX }}" cy="{{ rollOffset }}" rx="{{ irisR }}" ry="{{ irisR }}" fill="#2b3a58"/>
+        <circle cx="{{ pupilX }}" cy="{{ rollOffset }}" r="4" fill="#000"/>
+      </g>
+    </g>
+
+    <!-- Eyebrows -->
+    <g transform="translate(-48,{{ browY }}) rotate({{ negBrowAngle }})">
+      <path d="M -22 6 Q 0 -6 22 6" stroke="#5b3d2e" stroke-width="6" stroke-linecap="round" fill="none"/>
+    </g>
+    <g transform="translate(48,{{ browY }}) rotate({{ browAngle }})">
+      <path d="M -22 6 Q 0 -6 22 6" stroke="#5b3d2e" stroke-width="6" stroke-linecap="round" fill="none"/>
+    </g>
+
+    <!-- Mouth -->
+    <g transform="translate(0,44)">
+      <!-- Основной контур рта -->
+      <path d="M {{ negW }} 0 Q 0 {{ minTopCy16 }} {{ w }} 0 Q 0 {{ bottomCy }} {{ negW }} 0" fill="#d66" opacity="0.95"/>
+
+      <!-- Зубы (маскируются контуром рта) -->
+      <g id="teeth" mask="url(#mouthMask)" opacity="{{ mouthOpen }}">
+        {% set toothWidth = w / 4 %}  <!-- Увеличили ширину зубов (было /5) -->
+        {% set toothHeight = 10 %}    <!-- Увеличили высоту зубов (было 6) -->
+        <!-- Зубы фиксированы относительно верхней линии -->
+        {% set teethY = 2 %}  <!-- Небольшое смещение вниз от верхней линии -->
+
+        {% for i in range(-2, 2) %}  <!-- Уменьшили количество зубов для лучшего вида -->
+          {% set x = i * toothWidth + toothWidth/2 %}
+          <rect x="{{ x - toothWidth/2 }}" y="{{ teethY }}" width="{{ toothWidth - 1 }}" height="{{ toothHeight }}" fill="#fff" stroke="#ddd" stroke-width="0.5"/>
+        {% endfor %}
+      </g>
+
+      <!-- Верхняя линия рта (поверх зубов) -->
+      <path d="M {{ negW }} 0 Q 0 {{ minTopCy16 }} {{ w }} 0" stroke="#7a2a2a" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </g>
+  </g>
+</svg>
